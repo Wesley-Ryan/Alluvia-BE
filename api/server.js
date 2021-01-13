@@ -1,13 +1,17 @@
 const express = require("express");
-const morgan = require("morgan");
 const cors = require("cors");
+const helmet = require("helmet");
+const Auth = require("./auth/auth-router");
 
-const app = express();
-app.use(morgan("dev"));
-app.use(express.json());
+const server = express();
 
-app.use(`/api/*`, (req, res) => {
-  res.json({ data: `We are up and running` });
+server.use(helmet());
+server.use(cors());
+server.use(express.json());
+
+server.use("/account", Auth);
+
+server.get("/", (_, res) => {
+  res.send({ message: "Support Open Source :)" });
 });
-
-module.exports = app;
+module.exports = server;
