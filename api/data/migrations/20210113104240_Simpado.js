@@ -19,18 +19,29 @@ exports.up = function (knex) {
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
     })
-    .createTable("subscriptions", (subscriptions) => {
-      subscriptions.increments("subcription_id");
-      subscriptions.string("name", 128).notNullable();
-      subscriptions.date("due_date").notNullable();
-      subscriptions.integer("cost").notNullable();
-      subscriptions.text("notes", 255);
-      subscriptions
+    .createTable("subscription_services", (subscription_services) => {
+      subscription_services.increments("subscription_services_id");
+      subscription_services.string("name", 128).notNullable().unique();
+    })
+    .createTable("subscription", (subscription) => {
+      subscription.increments("subcription_id");
+      subscription.date("due_date").notNullable();
+      subscription.integer("cost").notNullable();
+      subscription.text("notes", 255);
+      subscription
         .integer("owner_id")
         .unsigned()
         .notNullable()
         .references("id")
         .inTable("users")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
+      subscription
+        .integer("subscription_services_id")
+        .unsigned()
+        .notNullable()
+        .references("subscription_services_id")
+        .inTable("subscription_services")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
     });
