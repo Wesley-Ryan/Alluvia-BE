@@ -14,7 +14,7 @@ const sharedConfig = {
 module.exports = {
   development: {
     ...sharedConfig,
-    connection: { filename: "./data/Simpado.db3" },
+    connection: { filename: "./api/data/Simpado.db3" },
   },
 
   staging: {
