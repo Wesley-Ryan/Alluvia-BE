@@ -21,7 +21,7 @@ const validateUserEmail = async (req, res, next) => {
   console.log("email", email);
   try {
     const user = await Helper.findBy(email);
-    if (!email) {
+    if (user.length <= 0) {
       res.status(400).json({
         message:
           "We were unable to locate the requested user. *INVALID ACCOUNT REQUEST* ",
