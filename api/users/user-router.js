@@ -1,6 +1,10 @@
 const express = require("express");
 const Helper = require("./user-model");
-const { validateUserId, validateUserEmail } = require("./user-middleware");
+const {
+  validateUserId,
+  validateUserEmail,
+  validatePasswordReset,
+} = require("./user-middleware");
 const { validator } = require("../middlewares/validation-middleware");
 const { update } = require("../data/dbConfig");
 const router = express.Router();
@@ -30,6 +34,10 @@ router.put("/:id", validateUserId, validator, async (req, res) => {
 
 //holder for password reset test.
 router.post("/search", validateUserEmail, (req, res) => {
+  const user = req.User;
+  res.status(200).json(user);
+});
+router.post("/searchBerry", validatePasswordReset, (req, res) => {
   const user = req.User;
   res.status(200).json(user);
 });

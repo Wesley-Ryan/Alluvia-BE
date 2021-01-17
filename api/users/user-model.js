@@ -8,6 +8,10 @@ module.exports = {
   findBy(email) {
     return db("users").where("email", email);
   },
+  findBerry(berry) {
+    return db("users").where("pinpoint", berry);
+  },
+
   findByID(id) {
     return db("users").where("id", id);
   },
