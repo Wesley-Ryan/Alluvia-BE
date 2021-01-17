@@ -42,7 +42,10 @@ const validatePasswordReset = async (req, res, next) => {
   const { berry } = req.body;
   try {
     // compare berry to user Berry
-    // if berries then next
+    // if berries then
+    res.status(200).json({ message: "User verification success." });
+    //set user to req
+    next();
     //if not berry good send error to client.
   } catch (error) {
     res.status(500).json({ message: error.message });
