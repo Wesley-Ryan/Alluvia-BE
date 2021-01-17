@@ -1,5 +1,10 @@
 const Helper = require("./user-model.js");
 
+const createBerry = () => {
+  const berry = Math.random().toString(36).slice(7);
+  return berry;
+};
+
 const validateUserId = async (req, res, next) => {
   const id = req.headers.user_id;
   try {
@@ -20,15 +25,19 @@ const validateUserEmail = async (req, res, next) => {
   const { email } = req.body;
   console.log("email", email);
   try {
-    const user = await Helper.findBy(email);
+    const [user] = await Helper.findBy(email);
     if (user.length <= 0) {
       res.status(400).json({
         message:
           "We were unable to locate the requested user. *INVALID ACCOUNT REQUEST* ",
       });
     } else {
-      // req.User = user; - shouldn't need this. TESTING ONLY
-      //generate code
+      console.log("MyUser", user);
+      const berry = createBerry();
+      const changes = { ...user, pinpoint: berry };
+      console.log(changes);
+      //const setBerry = await Helper.update(user.id, changes);
+      req.User = changes;
       //send to email
       //set code to users db
       next();
