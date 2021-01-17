@@ -1,6 +1,6 @@
 const express = require("express");
 const Helper = require("./user-model");
-const { validateUserId } = require("./user-middleware");
+const { validateUserId, validateUserEmail } = require("./user-middleware");
 const { validator } = require("../middlewares/validation-middleware");
 const { update } = require("../data/dbConfig");
 const router = express.Router();
@@ -26,6 +26,11 @@ router.put("/:id", validateUserId, validator, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+});
+
+router.post("/search", validateUserEmail, (req, res) => {
+  let user = req.User;
+  res.status(200).json(user);
 });
 
 module.exports = router;
