@@ -27,9 +27,23 @@ const validateUserEmail = async (req, res, next) => {
           "We were unable to locate the requested user. *INVALID ACCOUNT REQUEST* ",
       });
     } else {
-      req.User = user;
+      // req.User = user; - shouldn't need this. TESTING ONLY
+      //generate code
+      //send to email
+      //set code to users db
       next();
     }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const validatePasswordReset = async (req, res, next) => {
+  const { berry } = req.body;
+  try {
+    // compare berry to user Berry
+    // if berries then next
+    //if not berry good send error to client.
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
