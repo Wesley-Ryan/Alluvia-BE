@@ -35,8 +35,7 @@ const validateUserEmail = async (req, res, next) => {
       console.log("MyUser", user);
       const berry = createBerry();
       const changes = { ...user, pinpoint: berry };
-      console.log(changes);
-      //const setBerry = await Helper.update(user.id, changes);
+      await Helper.update(user.id, changes);
       req.User = changes;
       //send to email
       //set code to users db
