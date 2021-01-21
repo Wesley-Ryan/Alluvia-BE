@@ -36,11 +36,12 @@ const validateUserEmail = async (req, res, next) => {
       const changes = { ...user, pinpoint: berry };
       const savior = {
         user: user.email,
+        first_name: user.first_name,
         verification: berry,
       };
       await Helper.update(user.id, changes);
       req.User = changes;
-      sendHelp(savior.user, savior.verification); // user email and berry
+      sendHelp(savior.user, savior.first_name, savior.verification);
       //send to email
       //set code to users db
       next();
