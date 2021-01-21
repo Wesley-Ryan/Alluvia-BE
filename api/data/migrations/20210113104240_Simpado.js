@@ -18,6 +18,7 @@ exports.up = function (knex) {
         .inTable("roles")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
+      users.integer("pinpoint");
     })
     .createTable("subscription_services", (subscription_services) => {
       subscription_services.increments("subscription_services_id");
@@ -25,7 +26,7 @@ exports.up = function (knex) {
     })
     .createTable("subscription", (subscription) => {
       subscription.increments("subcription_id");
-      subscription.date("due_date").notNullable();
+      subscription.string("due_date").notNullable();
       subscription.integer("cost").notNullable();
       subscription.text("notes", 255);
       subscription
@@ -51,6 +52,5 @@ exports.down = function (knex) {
   return knex.schema
     .dropTableIfExists("roles")
     .dropTableIfExists("users")
-    .dropTableIfExists("subscription_services")
     .dropTableIfExists("subscription");
 };
