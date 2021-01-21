@@ -1,5 +1,6 @@
 const Helper = require("./user-model.js");
 const { sendHelp } = require("../auth/auth-util");
+
 const createBerry = () => {
   const berry = Math.random().toString(36).slice(7);
   return berry;
@@ -33,9 +34,13 @@ const validateUserEmail = async (req, res, next) => {
     } else {
       const berry = createBerry();
       const changes = { ...user, pinpoint: berry };
+      const savior = {
+        user: user.email,
+        verification: berry,
+      };
       await Helper.update(user.id, changes);
       req.User = changes;
-      sendHelp("im.wesleyryan@gmail.com");
+      sendHelp(savior.user, savior.verification); // user email and berry
       //send to email
       //set code to users db
       next();
