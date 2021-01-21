@@ -15,7 +15,12 @@ router.get("/:id", validateUserId, validator, (req, res) => {
   if (user.id != id) {
     res.status(400).json({ message: "Access Denied." });
   } else {
-    let success = { ...user, subscriptions: ["these come later."] };
+    let success = {
+      ...user,
+      password: null,
+      pinpoint: "",
+      subscriptions: ["these come later."],
+    };
     res.status(200).json(success);
   }
 });
@@ -39,7 +44,12 @@ router.post("/search", validateUserEmail, (req, res) => {
 });
 router.post("/searchBerry", validatePasswordReset, (req, res) => {
   const user = req.User;
-  res.status(200).json(user);
+  const success = {
+    ...user,
+    password: null,
+    pinpoint: "",
+  };
+  res.status(200).json(success);
 });
 
 module.exports = router;

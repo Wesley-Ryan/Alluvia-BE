@@ -7,12 +7,12 @@ const createBerry = () => {
 
 const validateUserId = async (req, res, next) => {
   const { id } = req.params;
+  console.log("HERE", id);
   try {
     const [user] = await Helper.findByID(id);
     if (!user) {
       res.status(400).json({ message: "We were unable to locate the user." });
     } else {
-      user.password = null;
       req.User = user;
       next();
     }
@@ -60,11 +60,6 @@ const validatePasswordReset = async (req, res, next) => {
       //res.send({ message: "Success" });
       next();
     }
-
-    // if berries then
-    //set user to req
-
-    //if not berry good send error to client.
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
