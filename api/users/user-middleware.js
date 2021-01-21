@@ -6,10 +6,10 @@ const createBerry = () => {
 };
 
 const validateUserId = async (req, res, next) => {
-  const id = req.headers.user_id;
+  const { id } = req.params;
   try {
     const [user] = await Helper.findByID(id);
-    if (user.length < 0) {
+    if (!user) {
       res.status(400).json({ message: "We were unable to locate the user." });
     } else {
       user.password = null;
@@ -49,12 +49,21 @@ const validatePasswordReset = async (req, res, next) => {
   console.log(berry);
   try {
     // compare berry to user Berry
-    const user = await Helper.findBerry(berry);
+    const [user] = await Helper.findBerry(berry);
     console.log("MY user from BERRY", user);
-    req.User = user;
+    if (!user) {
+      res
+        .status(400)
+        .json({ message: "Invalid verification code. Try again." });
+    } else {
+      req.User = user;
+      //res.send({ message: "Success" });
+      next();
+    }
+
     // if berries then
     //set user to req
-    next();
+
     //if not berry good send error to client.
   } catch (error) {
     res.status(500).json({ message: error.message });
