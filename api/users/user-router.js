@@ -9,7 +9,6 @@ const {
   validator,
   validateUserFundraiserRole,
 } = require("../middlewares/validation-middleware");
-const { update } = require("../data/dbConfig");
 const router = express.Router();
 
 router.get("/:id", validateUserId, validator, (req, res) => {
