@@ -1,5 +1,6 @@
 const Helper = require("./user-model.js");
 const { sendHelp } = require("../auth/auth-util");
+const bcrypt = require("bcryptjs");
 
 const createBerry = () => {
   const berry = Math.random().toString(36).slice(7);
@@ -51,18 +52,19 @@ const validateUserEmail = async (req, res, next) => {
 
 const validatePasswordReset = async (req, res, next) => {
   const berry = req.body.pinpoint;
-  console.log(berry);
+  const resetChange = req.body.password;
   try {
     // compare berry to user Berry
     const [user] = await Helper.findBerry(berry);
-    console.log("MY user from BERRY", user);
     if (!user) {
       res
         .status(400)
         .json({ message: "Invalid verification code. Try again." });
     } else {
-      req.User = user;
-      //res.send({ message: "Success" });
+      const hash = bcrypt.hashSync(resetChange, 9);
+      const changes = { ...user, password: hash };
+      const updated = await Helper.update(user.id, changes);
+      req.User = updated;
       next();
     }
   } catch (error) {
