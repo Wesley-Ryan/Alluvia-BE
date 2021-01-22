@@ -54,7 +54,6 @@ const validatePasswordReset = async (req, res, next) => {
   const berry = req.body.pinpoint;
   const resetChange = req.body.password;
   try {
-    // compare berry to user Berry
     const [user] = await Helper.findBerry(berry);
     if (!user) {
       res
