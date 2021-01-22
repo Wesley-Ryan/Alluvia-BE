@@ -5,7 +5,10 @@ const {
   validateUserEmail,
   validatePasswordReset,
 } = require("./user-middleware");
-const { validator } = require("../middlewares/validation-middleware");
+const {
+  validator,
+  validateUserFundraiserRole,
+} = require("../middlewares/validation-middleware");
 const { update } = require("../data/dbConfig");
 const router = express.Router();
 
@@ -38,18 +41,13 @@ router.put("/:id", validateUserId, validator, async (req, res) => {
 });
 
 //holder for password reset test.
-router.post("/search", validateUserEmail, (req, res) => {
-  const user = req.User;
-  res.status(200).json(user);
+router.post("/account/send/help", validateUserEmail, (req, res) => {
+  res.status(200).json({ message: "Success" });
 });
-router.post("/searchBerry", validatePasswordReset, (req, res) => {
+router.post("/account/v8/challenge", validatePasswordReset, (req, res) => {
   const user = req.User;
-  const success = {
-    ...user,
-    password: null,
-    pinpoint: "",
-  };
-  res.status(200).json(success);
+
+  res.status(200).json(user);
 });
 
 module.exports = router;

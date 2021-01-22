@@ -1,5 +1,6 @@
 const Helper = require("./user-model.js");
 const { sendHelp } = require("../auth/auth-util");
+const bcrypt = require("bcryptjs");
 
 const createBerry = () => {
   const berry = Math.random().toString(36).slice(7);
@@ -26,7 +27,7 @@ const validateUserEmail = async (req, res, next) => {
   const { email } = req.body;
   try {
     const [user] = await Helper.findBy(email);
-    if (user.length <= 0) {
+    if (!user) {
       res.status(400).json({
         message:
           "We were unable to locate the requested user. *INVALID ACCOUNT REQUEST* ",
@@ -36,13 +37,12 @@ const validateUserEmail = async (req, res, next) => {
       const changes = { ...user, pinpoint: berry };
       const savior = {
         user: user.email,
+        first_name: user.first_name,
         verification: berry,
       };
       await Helper.update(user.id, changes);
       req.User = changes;
-      sendHelp(savior.user, savior.verification); // user email and berry
-      //send to email
-      //set code to users db
+      sendHelp(savior.user, savior.first_name, savior.verification);
       next();
     }
   } catch (error) {
@@ -52,18 +52,18 @@ const validateUserEmail = async (req, res, next) => {
 
 const validatePasswordReset = async (req, res, next) => {
   const berry = req.body.pinpoint;
-  console.log(berry);
+  const resetChange = req.body.password;
   try {
-    // compare berry to user Berry
     const [user] = await Helper.findBerry(berry);
-    console.log("MY user from BERRY", user);
     if (!user) {
       res
         .status(400)
         .json({ message: "Invalid verification code. Try again." });
     } else {
-      req.User = user;
-      //res.send({ message: "Success" });
+      const hash = bcrypt.hashSync(resetChange, 9);
+      const changes = { ...user, password: hash };
+      const updated = await Helper.update(user.id, changes);
+      req.User = updated;
       next();
     }
   } catch (error) {
