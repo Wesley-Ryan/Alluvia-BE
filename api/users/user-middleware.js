@@ -42,8 +42,6 @@ const validateUserEmail = async (req, res, next) => {
       await Helper.update(user.id, changes);
       req.User = changes;
       sendHelp(savior.user, savior.first_name, savior.verification);
-      //send to email
-      //set code to users db
       next();
     }
   } catch (error) {

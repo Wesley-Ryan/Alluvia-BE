@@ -3,8 +3,8 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendHelp = (userInNeed, userName, berry) => {
   const msg = {
-    to: userInNeed, // Change to your recipient
-    from: "alluvia.app@outlook.com", // Change to your verified sender
+    to: userInNeed,
+    from: "alluvia.app@outlook.com",
     subject: "Copy that...Team Alluvia Over...",
     text: "Verification",
     templateId: process.env.EMAIL_TEMPLATE,
