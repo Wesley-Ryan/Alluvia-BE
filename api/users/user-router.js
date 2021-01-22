@@ -38,7 +38,7 @@ router.put("/:id", validateUserId, validator, async (req, res) => {
 });
 
 //holder for password reset test.
-router.post("/search", validateUserEmail, (req, res) => {
+router.post("/account/send/help", validateUserEmail, (req, res) => {
   const user = req.User;
   res.status(200).json(user);
 });
