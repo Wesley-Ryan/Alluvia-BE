@@ -11,6 +11,22 @@ router.get("/:id/subscriptions", async (req, res) => {
     res.status(200).json(subscriptions);
   }
 });
+router.get("/:id/subscriptions/:subscriptionid", async (req, res) => {
+  const subID = req.params.subscriptionid;
+  try {
+    const [subscription] = await SubscriptionHelper.getByID(subID);
+    if (!subscription) {
+      res.status(400).json({
+        message:
+          "Invalid ID, please try again or contact support for more help.",
+      });
+    } else {
+      res.status(200).json(subscription);
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 router.post("/:id/subscriptions", async (req, res) => {
   const newSubscription = req.body;
