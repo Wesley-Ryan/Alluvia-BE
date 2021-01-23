@@ -43,11 +43,14 @@ router.put("/:id/subscriptions/:subscriptionid", async (req, res) => {
   const subID = req.params.subscriptionid;
   const updates = req.body;
   try {
-    const updatedSubscription = await SubscriptionHelper.update(subID, updates);
+    const [updatedSubscription] = await SubscriptionHelper.update(
+      subID,
+      updates
+    );
     if (!updatedSubscription) {
       res.status(400).json({
         message:
-          "Invalid ID, please try again or contact support for more help.",
+          "ERROR: Invalid ID, please try again or contact support for more help.",
       });
     } else {
       res.status(200).json(updatedSubscription);
