@@ -18,7 +18,7 @@ router.get("/:id/subscriptions/:subscriptionid", async (req, res) => {
     if (!subscription) {
       res.status(400).json({
         message:
-          "Invalid ID, please try again or contact support for more help.",
+          "ERROR: Invalid ID, please try again or contact support for more help.",
       });
     } else {
       res.status(200).json(subscription);
