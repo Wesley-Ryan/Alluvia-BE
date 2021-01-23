@@ -1,8 +1,15 @@
 const db = require("../data/dbConfig");
 
 module.exports = {
-  getAll(id) {
-    return db("subscription").where("owner_id", id);
+  async getAll(id) {
+    const subs = await db("subscription as s")
+      .join(
+        "subscription_services as ss",
+        "ss.subscription_services_id",
+        "s.subscription_services_id"
+      )
+      .where("owner_id", id);
+    return subs;
   },
 
   async create(subscription) {
