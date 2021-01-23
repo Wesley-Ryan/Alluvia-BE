@@ -23,4 +23,22 @@ router.post("/:id/subscriptions", async (req, res) => {
   }
 });
 
+router.put("/:id/subscriptions/:subscriptionid", async (req, res) => {
+  const subID = req.params.subscriptionid;
+  const updates = req.body;
+  try {
+    const updatedSubscription = await SubscriptionHelper.update(subID, updates);
+    if (!updatedSubscription) {
+      res.status(400).json({
+        message:
+          "Invalid ID, please try again or contact support for more help.",
+      });
+    } else {
+      res.status(200).json(updatedSubscription);
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

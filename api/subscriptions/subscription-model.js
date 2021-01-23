@@ -11,6 +11,16 @@ module.exports = {
       .where("owner_id", id);
     return subs;
   },
+  async getByID(id) {
+    const subs = await db("subscription as s")
+      .join(
+        "subscription_services as ss",
+        "ss.subscription_services_id",
+        "s.subscription_services_id"
+      )
+      .where("subcription_id", id);
+    return subs;
+  },
 
   async create(subscription) {
     try {
