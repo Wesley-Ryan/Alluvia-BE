@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.get("/:id/subscriptions", validator, async (req, res) => {
   const { id } = req.params;
-  const [subscriptions] = await SubscriptionHelper.getAll(id);
-  if (!subscriptions) {
+  const subscriptions = await SubscriptionHelper.getAll(id);
+  if (subscriptions.length < 1) {
     res.status(200).json({ message: "Need to add some subscriptions" });
   } else {
     res.status(200).json(subscriptions);
