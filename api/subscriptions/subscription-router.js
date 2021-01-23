@@ -73,4 +73,25 @@ router.put(
   }
 );
 
+router.delete(
+  "/:id/subscriptions/:subscriptionid",
+  validator,
+  async (req, res) => {
+    const { id, subscriptionid } = req.params;
+    try {
+      const getSubs = await SubscriptionHelper.getAll(id);
+      if (id != getSubs.owner_id) {
+        res.status(400).json({
+          Error: "Error: You must be the owner to remove this subscription.",
+        });
+      } else {
+        const remaining = await SubscriptionHelper.remove(subscriptionid, id);
+        res.status(201).json(remaining);
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
 module.exports = router;

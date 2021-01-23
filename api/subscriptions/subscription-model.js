@@ -39,4 +39,13 @@ module.exports = {
       throw new Error(error.message);
     }
   },
+  async remove(id, owner) {
+    try {
+      await db("subscription").where("subcription_id", id).del();
+      const remainingSubs = await this.getAll(owner);
+      return remainingSubs;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
 };
