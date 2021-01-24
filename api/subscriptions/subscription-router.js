@@ -1,11 +1,14 @@
 const express = require("express");
 const { validator } = require("../middlewares/validation-middleware");
-const { validateSubscriptionBody } = require("./subscription-middleware");
+const {
+  validateSubscriptionBody,
+  validateUserSubsriptionOwner,
+} = require("./subscription-middleware");
 const SubscriptionHelper = require("./subscription-model");
 const router = express.Router();
 
-router.get("/:id/subscriptions", validator, async (req, res) => {
-  const { id } = req.params;
+router.get("/subscriptions", validator, async (req, res) => {
+  const id = req.userID;
   const subscriptions = await SubscriptionHelper.getAll(id);
   if (subscriptions.length < 1) {
     res.status(200).json({ message: "Need to add some subscriptions" });
@@ -51,22 +54,17 @@ router.post(
 router.put(
   "/:id/subscriptions/:subscriptionid",
   validator,
+  validateUserSubsriptionOwner,
   async (req, res) => {
-    const subID = req.params.subscriptionid;
-    const updates = req.body;
+    const subID = req.subID;
+    const updates = { ...req.body, owner_id: req.userID };
+
     try {
       const [updatedSubscription] = await SubscriptionHelper.update(
         subID,
         updates
       );
-      if (!updatedSubscription) {
-        res.status(400).json({
-          message:
-            "ERROR: Invalid ID, please try again or contact support for more help.",
-        });
-      } else {
-        res.status(200).json(updatedSubscription);
-      }
+      res.status(200).json(updatedSubscription);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -77,7 +75,8 @@ router.delete(
   "/:id/subscriptions/:subscriptionid",
   validator,
   async (req, res) => {
-    const { id, subscriptionid } = req.params;
+    const { subscriptionid } = req.params;
+    const id = req.userID;
     try {
       const getSubs = await SubscriptionHelper.getAll(id);
       if (id != getSubs.owner_id) {
