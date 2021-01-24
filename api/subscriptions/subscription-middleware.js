@@ -27,7 +27,7 @@ const validateUserSubsriptionOwner = async (req, res, next) => {
       });
     } else if (id != sub.owner_id) {
       res.status(400).json({
-        message: "You must be the owner to select this susbscription",
+        message: "ERROR: You must be the owner to select this susbscription",
       });
     } else {
       req.subID = subID;
