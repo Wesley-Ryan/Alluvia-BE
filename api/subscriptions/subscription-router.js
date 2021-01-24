@@ -17,20 +17,15 @@ router.get("/subscriptions", validator, async (req, res) => {
   }
 });
 router.get(
-  "/:id/subscriptions/:subscriptionid",
+  "/subscriptions/:subscriptionid",
   validator,
+  validateUserSubsriptionOwner,
   async (req, res) => {
-    const subID = req.params.subscriptionid;
+    const subID = req.subID;
     try {
       const [subscription] = await SubscriptionHelper.getByID(subID);
-      if (!subscription) {
-        res.status(400).json({
-          message:
-            "ERROR: Invalid ID, please try again or contact support for more help.",
-        });
-      } else {
-        res.status(200).json(subscription);
-      }
+
+      res.status(200).json(subscription);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
