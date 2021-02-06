@@ -166,7 +166,7 @@ Used to pull logged in user's data. req.params id must match unique user_ID that
 
 **Code** : `200 OK`
 
-**Content example**
+**Returned content example**
 
 ```json
 {
@@ -207,7 +207,65 @@ Used to pull logged in user's data. req.params id must match unique user_ID that
 </details>
 
 <details>
-<summary># Login</summary>
+<summary># User Subscriptions</summary>
 <br>
-Used to collect a Token for a registered User.
+Used to collect a list of subscriptions created by the active user.
+**URL** : `/user/:id/`
+
+**Method** : `GET`
+
+**Auth required** : YES: Token
+
+**Data constraints**
+
+```REQ HEADERS
+{
+  "Authorization": ["Token"]
+}
+```
+
+## Success Response
+
+**Code** : `200 OK`
+
+**Returned content example**
+
+```json
+{
+  "due_date": "[string]",
+  "cost": "[Monthly Cost of Subscription]",
+  "notes": "[Description Text]",
+  "owner_id": "[userID of Owner]",
+  "subscription_services_id": "[subcription ID]",
+  "subscription_services_name": "[subscription name]"
+}
+```
+
+## Error Response
+
+**Condition** : If 'invalid token'.
+
+**Code** : `401 BAD REQUEST`
+
+**Content** :
+
+```json
+{
+  "message": ["Access Denied."]
+  message: "Need to add some subscriptions"
+}
+```
+
+**Condition** : If 'User ID is not valid or differs from req.params'.
+
+**Code** : `401 BAD REQUEST`
+
+**Content** :
+
+```json
+{
+  "message": ["You must have access to view this account."]
+}
+```
+
 </details>
