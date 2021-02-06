@@ -82,13 +82,6 @@ Used to register a new User account.
 
 <br><br>
 
-<pre>
-&lt;details&gt;
-&lt;summary&gt;Sign Up&lt;&#47;summary&gt;
-&lt;br&gt;
-This is how you dropdown.
-&lt;&#47;details&gt;
-</pre>
 </details>
 
 # Login
