@@ -1,5 +1,6 @@
 const express = require("express");
 const Helper = require("./user-model");
+const SubscriptionHelper = require("../subscriptions/subscription-model");
 const {
   validateUserId,
   validateUserEmail,
@@ -11,21 +12,28 @@ const {
 } = require("../middlewares/validation-middleware");
 const router = express.Router();
 
-router.get("/:id", validateUserId, validator, (req, res) => {
+//dashboard
+router.get("/:id", validateUserId, validator, async (req, res) => {
   const { id } = req.params;
   let user = req.User;
   if (user.id != id) {
     res.status(400).json({ message: "Access Denied." });
   } else {
-    let success = {
-      ...user,
-      password: null,
-      pinpoint: "",
-      subscriptions: ["these come later."],
-    };
-    res.status(200).json(success);
+    try {
+      const subscriptions = await SubscriptionHelper.getAll(user.id);
+      let success = {
+        ...user,
+        password: null,
+        pinpoint: "",
+        subscriptions: subscriptions,
+      };
+      res.status(200).json(success);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 });
+
 router.put("/:id", validateUserId, validator, async (req, res) => {
   const { id } = req.params;
   let user = req.User;
